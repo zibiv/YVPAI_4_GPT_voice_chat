@@ -15,11 +15,16 @@ bot.start((ctx) => {
 
 bot.on(message('voice'), async (ctx) => {
   //узнаем какой пользователь прислал сообщение
-  const userId = await ctx.message.from.id
+  const userId = ctx.message.from.id
   //получаем ссылку на файл голосового сообщения
   const fileLinkObj  = await ctx.telegram.getFileLink(ctx.message.voice.file_id)
-  await ctx.reply(userId + " " + fileLinkObj.href)
-  ogg.create(fileLinkObj.href, userId)
+  try {
+    await ogg.convert(fileLinkObj.href, userId)
+    await ctx.sendMessage('Конвертация прошла успешно')
+  } catch {
+    console.error(error);
+    await ctx.sendMessage('Конвертация полностью провалилась')
+  }
 })
 
 bot.launch()
