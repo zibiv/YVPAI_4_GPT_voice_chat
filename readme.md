@@ -5,6 +5,8 @@ VoiceBot - это инновационный проект, который пре
 
 ## Техническая сторона
 - Проект будет использовать Node.js
+- ffmpeg библиотека для конвертации файлов из ogg формата в mp3 [ffmpeg для установки](https://www.npmjs.com/package/@ffmpeg-installer/ffmpeg), [fluent-ffmpeg для управления конвертацией](https://www.npmjs.com/package/fluent-ffmpeg)
+
 
 ## Функционал
 - Чат-бот принимает сообщения в формате аудио и в формате текста
