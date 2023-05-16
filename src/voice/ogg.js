@@ -15,8 +15,10 @@ const mediaDir = path.join(__dirname, '..', '..', 'media')
 
 class OggToMp3Converter {
   toMP3(readableStream, filePath) {
+
     return new Promise((resolve, reject) => {
       const command = ffmpeg(readableStream)
+      
       command
         .outputFormat('mp3')
         .output(filePath)
@@ -27,6 +29,7 @@ class OggToMp3Converter {
           reject(filePath)
         })
         .run()
+
     })
   }
 
@@ -34,6 +37,7 @@ class OggToMp3Converter {
     //создание названия mp3 файла
     const fileName = userId + '_' + path.basename(url).split('.')[0] + ".mp3"
     const mp3Path = path.join(mediaDir, fileName)
+
     return new Promise((resolve, reject) => {
       get(url, async (response) => {
         try {
