@@ -2,3 +2,5 @@
 .env
 .env.*
 /config
+/secondBot
+/data/telegraf-sessions.sqlite
