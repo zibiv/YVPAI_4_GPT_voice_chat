@@ -24,7 +24,7 @@ bot.start((ctx) => {
     //TODO форматировать сообщение
     `Привет ${ctx.update.message.from.first_name}! Рад тебя видеть. 
     Ты можешь задавать мне вопросы, просто напиши мне или отправь голосовое сообщение!
-    Если хочешь что бы наш разговор был забыт и начался с чистого листа, напиши команду /clean`
+    Если хочешь что бы наш разговор был забыт и начался с чистого листа, напиши команду /new`
   )
 })
 
@@ -50,6 +50,30 @@ bot.on(message('voice'), async (ctx) => {
     const chatAnswer = await openAIApi.chatAI(ctx.session.messages)
     //TODO давать ответ в том числе голосом
     //передача обновленного контекста в хранилище сессии
+    ctx.session.messages.push(chatAnswer)
+    console.log(ctx.session)
+
+    await ctx.sendMessage(chatAnswer.content)
+  } catch (error) {
+    console.error(error)
+    await ctx.sendMessage(
+      'Ваш запрос полностью провалился, уже исправляем это.'
+    )
+  }
+})
+
+bot.on(message('text'), async (ctx) => {
+
+  ctx.session ??= createNewContext()
+  const userId = ctx.message.from.id
+  const userMessage = ctx.message.text
+
+  try {
+    //TODO статус был дольше и покрывал все время которое необходимо на получение ответа в чате
+    await ctx.sendChatAction('typing')
+
+    ctx.session.messages.push({ role: openAIApi.roles.USER, content: userMessage })
+    const chatAnswer = await openAIApi.chatAI(ctx.session.messages)
     ctx.session.messages.push(chatAnswer)
     console.log(ctx.session)
 
