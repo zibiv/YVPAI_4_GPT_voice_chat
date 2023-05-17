@@ -62,6 +62,30 @@ bot.on(message('voice'), async (ctx) => {
   }
 })
 
+bot.on(message('text'), async (ctx) => {
+
+  ctx.session ??= createNewContext()
+  const userId = ctx.message.from.id
+  const userMessage = ctx.message.text
+
+  try {
+    //TODO статус был дольше и покрывал все время которое необходимо на получение ответа в чате
+    await ctx.sendChatAction('typing')
+
+    ctx.session.messages.push({ role: openAIApi.roles.USER, content: userMessage })
+    const chatAnswer = await openAIApi.chatAI(ctx.session.messages)
+    ctx.session.messages.push(chatAnswer)
+    console.log(ctx.session)
+
+    await ctx.sendMessage(chatAnswer.content)
+  } catch (error) {
+    console.error(error)
+    await ctx.sendMessage(
+      'Ваш запрос полностью провалился, уже исправляем это.'
+    )
+  }
+})
+
 bot.launch()
 
 const handleStopSignal = () => {
