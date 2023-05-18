@@ -30,7 +30,7 @@ bot.start((ctx) => {
 
 bot.command('new', async (ctx) => {
   ctx.session = createNewContext()
-  await ctx.reply('Начинаю новый диалог, жду вашего голосового сообщения.')
+  await ctx.reply('Начинаю новый диалог, жду вашего голосового сообщения или текста.')
 })
 
 bot.on(message('voice'), async (ctx) => {
