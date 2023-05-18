@@ -47,21 +47,23 @@ bot.on(message('voice'), async (ctx) => {
     const audioText = await openAIApi.transcriptAI(map3Path)
 
     ctx.session.messages.push({ role: openAIApi.roles.USER, content: audioText })
-    const chatAnswer = await openAIApi.chatAI(ctx.session.messages)
+    const chatAnswer = await openAIApi.chatAI(ctx.session.messages.slice(-5))
     //TODO давать ответ в том числе голосом
     //передача обновленного контекста в хранилище сессии
     ctx.session.messages.push(chatAnswer)
-    console.log(ctx.session)
+    console.log(ctx.session.messages.slice(-3))
+    console.log(ctx.session.messages.length)
 
     await ctx.sendMessage(chatAnswer.content)
   } catch (error) {
-    console.error(error)
+    const errorToShow = error.response?.data ?? error
+    console.error("text message handler: ", errorToShow)
     await ctx.sendMessage(
       'Ваш запрос полностью провалился, уже исправляем это.'
     )
   }
 })
-
+//TODO два обработчика повторяются почти полностью, надо изменить
 bot.on(message('text'), async (ctx) => {
 
   ctx.session ??= createNewContext()
@@ -73,13 +75,15 @@ bot.on(message('text'), async (ctx) => {
     await ctx.sendChatAction('typing')
 
     ctx.session.messages.push({ role: openAIApi.roles.USER, content: userMessage })
-    const chatAnswer = await openAIApi.chatAI(ctx.session.messages)
+    const chatAnswer = await openAIApi.chatAI(ctx.session.messages.slice(-5))
     ctx.session.messages.push(chatAnswer)
-    console.log(ctx.session)
+    console.log(ctx.session.messages.slice(-3))
+    console.log(ctx.session.messages.length)
 
     await ctx.sendMessage(chatAnswer.content)
   } catch (error) {
-    console.error(error)
+    const errorToShow = error.response?.data ?? error
+    console.error("text message handler: ", errorToShow)
     await ctx.sendMessage(
       'Ваш запрос полностью провалился, уже исправляем это.'
     )
