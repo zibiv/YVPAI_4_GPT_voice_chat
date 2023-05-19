@@ -16,7 +16,6 @@ bot.use(session({
   store,
 }))
 
-// bot.on("message", (ctx) => ctx.reply(JSON.stringify(ctx.message, null, 2)))
 bot.start((ctx) => {
   ctx.session ??= createNewContext()
   
@@ -32,6 +31,13 @@ bot.command('new', async (ctx) => {
   ctx.session = createNewContext()
   await ctx.reply('Начинаю новый диалог, жду вашего голосового сообщения или текста.')
 })
+
+const commands = [
+  { command: 'start', description: 'запуск бота'},
+  { command: 'new', description: 'очистить контекст беседы'},
+]
+
+bot.telegram.setMyCommands(commands)
 
 bot.on(message('voice'), async (ctx) => {
   ctx.session ??= createNewContext()
