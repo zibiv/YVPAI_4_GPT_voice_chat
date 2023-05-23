@@ -11,6 +11,7 @@ export const startController = (ctx) => {
 
   return ctx.replyWithMarkdownV2(
     `*Привет ${ctx.update.message.from.first_name}\\!* Рад тебя видеть\\. 
+Сейчас я работаю в режиме *\\"чаттер\\"* в котором мы можем общаться на любые темы\\.
 Ты можешь задавать мне вопросы, просто напиши мне или отправь *голосовое* сообщение\\!
 
 Если хочешь, чтобы наш разговор был *забыт и начался с чистого листа*, напиши команду /new
@@ -28,8 +29,9 @@ export const newController = async (ctx) => {
 export const modeController = async (ctx) => {
   const modesButtons = {
     keyboard: [
-      ['ответь на email', 'улучши текст'],
+      ['улучши текст'],
       ['эксперт', 'генерируй код'],
+      ['чаттер']
     ],
     resize_keyboard: true,
     one_time_keyboard: true,

@@ -1,11 +1,16 @@
+import { userMode } from "../../../modes/index.js"
+import { createNewContext } from "../../../../data/starterMessage.js"
+
 const email = async (ctx) => {
-  ctx.reply('Режим ответа на письма пока не поддерживается', {
+  ctx.reply('Режим пока не поддерживается.', {
     reply_markup: { remove_keyboard: true },
   })
 }
 
 const betterText = async (ctx) => {
-  ctx.reply('Режим улучшения текста пока не поддерживается', {
+  userMode.setMode('betterText')
+  ctx.session = createNewContext()
+  ctx.reply('Включаю режим улучшения текста, жду вашего сообщения содержащего текст для улучшения, исправления орфографии', {
     reply_markup: { remove_keyboard: true },
   })
 }
@@ -23,6 +28,14 @@ const assistant = async (ctx) => {
   })
 }
 
-const hears = { email, betterText, assistant }
+const chatter = async (ctx) => {
+  userMode.setMode('chatter')
+  ctx.session = createNewContext()
+  ctx.reply('Включаю режим чаттер, в котором мы общаемся на различные темы, жду ваше аудио сообщение или текст.', {
+    reply_markup: { remove_keyboard: true },
+  })
+}
+
+const hears = { email, betterText, assistant, chatter }
 
 export default hears

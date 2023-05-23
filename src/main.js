@@ -19,6 +19,7 @@ bot.command('changeassistant', changeAssistantController)
 bot.hears('ответь на email', hearsController.email)
 bot.hears('улучши текст', hearsController.betterText)
 bot.hears('эксперт', hearsController.assistant)
+bot.hears('чаттер', hearsController.chatter)
 bot.action('эксперт веб разработки', (ctx) => {
   ctx.answerCbQuery('You clicked the button эксперт веб разработки!')
   ctx.editMessageReplyMarkup({ inline_keyboard: [] })

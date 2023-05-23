@@ -1,6 +1,7 @@
 import { createNewContext } from '../../../../data/starterMessage.js'
 import { ogg } from '../../../voice/ogg.js'
 import { openAIApi } from '../../../AI/openai.js'
+import { userMode } from '../../../modes/index.js'
 
 //TODO два обработчика повторяются почти полностью, надо изменить
 const voice = async (ctx) => {
@@ -20,11 +21,10 @@ const voice = async (ctx) => {
       role: openAIApi.roles.USER,
       content: audioText,
     })
-    const chatAnswer = await openAIApi.chatAI(ctx.session.messages.slice(-5))
+    const chatAnswer = await openAIApi.chatAI(ctx.session.messages.slice(userMode.contextValue))
     //TODO давать ответ в том числе голосом
     //передача обновленного контекста в хранилище сессии
     ctx.session.messages.push(chatAnswer)
-    console.log(ctx.session.messages.slice(-3))
     console.log(ctx.session.messages.length)
 
     await ctx.sendMessage(chatAnswer.content)
@@ -50,9 +50,8 @@ const text = async (ctx) => {
       role: openAIApi.roles.USER,
       content: userMessage,
     })
-    const chatAnswer = await openAIApi.chatAI(ctx.session.messages.slice(-5))
+    const chatAnswer = await openAIApi.chatAI(ctx.session.messages.slice(userMode.contextValue))
     ctx.session.messages.push(chatAnswer)
-    console.log(ctx.session.messages.slice(-3))
     console.log(ctx.session.messages.length)
 
     await ctx.sendMessage(chatAnswer.content)
