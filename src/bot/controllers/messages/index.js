@@ -28,6 +28,9 @@ const voice = async (ctx) => {
     console.log(ctx.session.messages.length)
 
     await ctx.sendMessage(chatAnswer.content)
+    if(userMode.currentModeIdx) {
+      await ctx.replyWithHTML(`<i style="color:blue">Действует режим ${userMode.currentMode}, жду вашего сообщения.</i>`)
+    }
   } catch (error) {
     const errorToShow = error.response?.data ?? error
     console.error('text message handler: ', errorToShow)
@@ -55,6 +58,10 @@ const text = async (ctx) => {
     console.log(ctx.session.messages.length)
 
     await ctx.sendMessage(chatAnswer.content)
+
+    if(userMode.currentModeIdx) {
+      await ctx.replyWithHTML(`<i style="color:blue">Действует режим ${userMode.currentMode}, жду вашего сообщения.</i>`)
+    }
   } catch (error) {
     const errorToShow = error.response?.data ?? error
     console.error('text message handler: ', errorToShow)

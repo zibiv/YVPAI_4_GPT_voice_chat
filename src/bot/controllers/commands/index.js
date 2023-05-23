@@ -29,14 +29,14 @@ export const newController = async (ctx) => {
 export const modeController = async (ctx) => {
   const modesButtons = {
     keyboard: [
-      ['улучши текст'],
+      ['чаттер'],
       ['эксперт', 'генерируй код'],
-      ['чаттер']
+      ['улучши текст']
     ],
     resize_keyboard: true,
     one_time_keyboard: true,
   }
-  await ctx.reply('Выбери режим работы', { reply_markup: modesButtons })
+  await ctx.reply('Выбери режим работы:', { reply_markup: modesButtons })
 }
 
 export const changeAssistantController = async (ctx) => {
@@ -45,7 +45,7 @@ export const changeAssistantController = async (ctx) => {
     resize_keyboard: true,
     one_time_keyboard: true,
   }
-  await ctx.reply('Выбери нового ассистента', {
+  await ctx.reply('Выбери нового ассистента:', {
     reply_markup: assistanceButtons,
   })
 }

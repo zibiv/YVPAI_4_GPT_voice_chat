@@ -5,7 +5,8 @@ class Mode {
     chatter: 0,
     betterText: 1,
   }
-  currentMode = this.modes.chatter
+  currentMode = 'chatter'
+  currentModeIdx = this.modes.chatter
   contextValue = -5
 
   contextMessages = [
@@ -16,14 +17,15 @@ class Mode {
   ]
 
   setMode(mode = 'chatter') {
-    this.currentMode = this.modes[mode]
-    this.contextValue = this.contextMessages[this.currentMode].contextValue
+    this.currentMode = mode
+    this.currentModeIdx = this.modes[mode]
+    this.contextValue = this.contextMessages[this.currentModeIdx].contextValue
   }
 
   getContextMessage() {
     return {
       role: openAIApi.roles.USER,
-      content:this.contextMessages[this.currentMode].message,
+      content:this.contextMessages[this.currentModeIdx].message,
     }
   }
 }

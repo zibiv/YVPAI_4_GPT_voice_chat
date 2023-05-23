@@ -10,7 +10,7 @@ const email = async (ctx) => {
 const betterText = async (ctx) => {
   userMode.setMode('betterText')
   ctx.session = createNewContext()
-  ctx.reply('Включаю режим улучшения текста, жду вашего сообщения содержащего текст для улучшения, исправления орфографии', {
+  ctx.reply('Включаю режим улучшения текста, жду вашего сообщения содержащего текст для улучшения, исправления орфографии.', {
     reply_markup: { remove_keyboard: true },
   })
 }
@@ -23,7 +23,7 @@ const assistant = async (ctx) => {
       { text: 'secure', callback_data: 'эксперт компьютерной безопасности' },
     ],
   ]
-  ctx.reply('Выбери эксперта для работы', {
+  ctx.reply('Выбери эксперта для работы:', {
     reply_markup: { remove_keyboard: true, inline_keyboard },
   })
 }
