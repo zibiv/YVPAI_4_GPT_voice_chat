@@ -18,6 +18,7 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@telegraf/session": "^2.0.0-beta.6",
+    "axios": "^1.4.0",
     "better-sqlite3": "^8.3.0",
     "config": "^3.3.9",
     "fluent-ffmpeg": "^2.1.2",
