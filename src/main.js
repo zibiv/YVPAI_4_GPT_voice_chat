@@ -18,6 +18,7 @@ bot.command('changeassistant', changeAssistantController)
 
 bot.hears('улучши текст', hearsController.betterText)
 bot.hears('чаттер', hearsController.chatter)
+bot.hears('спасибо', hearsController.chatter)
 bot.hears('проверка ответа', hearsController.checkAnswer)
 bot.action('эксперт веб разработки', (ctx) => {
   ctx.answerCbQuery('You clicked the button эксперт веб разработки!')
