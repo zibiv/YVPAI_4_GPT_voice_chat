@@ -1,12 +1,6 @@
 import { userMode } from "../../../modes/index.js"
 import { createNewContext } from "../../../../data/starterMessage.js"
 
-const email = async (ctx) => {
-  ctx.reply('Режим пока не поддерживается.', {
-    reply_markup: { remove_keyboard: true },
-  })
-}
-
 const betterText = async (ctx) => {
   userMode.setMode('betterText')
   ctx.session = createNewContext()
@@ -36,6 +30,14 @@ const chatter = async (ctx) => {
   })
 }
 
-const hears = { email, betterText, assistant, chatter }
+const checkAnswer = async (ctx) => {
+  userMode.setMode('checkAnswer')
+  ctx.session = createNewContext()
+  ctx.reply('Включаю режим проверки ответов. Этот режим поможет проверить, насколько хорошо вы понимаете ту или иную тему.', {
+    reply_markup: { remove_keyboard: true },
+  })
+}
+
+const hears = { betterText, assistant, chatter, checkAnswer }
 
 export default hears

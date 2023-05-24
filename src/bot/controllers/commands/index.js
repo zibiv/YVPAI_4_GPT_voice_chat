@@ -30,7 +30,7 @@ export const modeController = async (ctx) => {
   const modesButtons = {
     keyboard: [
       ['чаттер'],
-      ['эксперт', 'генерируй код'],
+      ['проверка ответа'],
       ['улучши текст']
     ],
     resize_keyboard: true,
