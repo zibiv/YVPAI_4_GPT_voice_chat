@@ -10,6 +10,12 @@ import {
 } from './bot/controllers/commands/index.js'
 import messagesController from './bot/controllers/messages/index.js'
 import hearsController from './bot/controllers/commands/hears.js'
+import middleware from './bot/middlewares/index.js'
+import action from './bot/controllers/commands/actions.js'
+
+import config from 'config'
+
+bot.use(middleware.responseTime)
 
 bot.start(startController)
 bot.command('new', newController)
@@ -18,12 +24,9 @@ bot.command('changeassistant', changeAssistantController)
 
 bot.hears('улучши текст', hearsController.betterText)
 bot.hears('чаттер', hearsController.chatter)
-bot.hears('спасибо', hearsController.chatter)
+bot.hears(['спасибо', 'Спасибо'], hearsController.chatter)
 bot.hears('проверка ответа', hearsController.checkAnswer)
-bot.action('эксперт веб разработки', (ctx) => {
-  ctx.answerCbQuery('You clicked the button эксперт веб разработки!')
-  ctx.editMessageReplyMarkup({ inline_keyboard: [] })
-})
+bot.action('озвучить сообщение', action.messageToSpeech)
 
 bot.telegram.setMyCommands(commands)
 
