@@ -18,6 +18,7 @@ class ycSpeech {
           headers: {
             'Authorization': 'Api-key ' + config.get('YC_SPEECH_API'),
             'Content-Type': 'application/x-www-form-urlencoded',
+            'Connection': 'keep-alive'
           },
           body: dataYcSpeech,
         }
