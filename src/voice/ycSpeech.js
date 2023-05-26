@@ -1,28 +1,30 @@
 import path from 'path'
-import axios from 'axios'
+import fetch from 'node-fetch'
 import config from 'config'
 
 class ycSpeech {
   textToSpeech(text) {
     return new Promise(async (resolve, reject) => {
+
       try {
-        const result = await axios.post(
-          'https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize',
-          {
-            text: text,
-            lang: 'ru-RU',
-            voice: 'ermil',
-            emotion: 'good'
+        const dataYcSpeech = new URLSearchParams()
+        dataYcSpeech.append('text', text)
+        dataYcSpeech.append('lang', 'ru-RU')
+        dataYcSpeech.append('voice', 'ermil')
+        dataYcSpeech.append('emotion', 'good')
+
+        const options = {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Api-key ' + config.get('YC_SPEECH_API'),
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-          {
-            headers: {
-              Authorization: 'Api-key ' + config.get('YC_SPEECH_API'),
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            responseType: 'arraybuffer',
-          }
-        )
-        resolve(result.data)
+          body: dataYcSpeech,
+        }
+
+        const result = await fetch('https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize', options)
+  
+        resolve(result.body)
       } catch (error) {
         console.log('❌', error.response?.data.toString('utf-8') ?? error)
         reject(error)
