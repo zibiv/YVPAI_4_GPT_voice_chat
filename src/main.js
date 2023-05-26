@@ -10,12 +10,7 @@ import {
 } from './bot/controllers/commands/index.js'
 import messagesController from './bot/controllers/messages/index.js'
 import hearsController from './bot/controllers/commands/hears.js'
-import middleware from './bot/middlewares/index.js'
 import action from './bot/controllers/commands/actions.js'
-
-import config from 'config'
-
-bot.use(middleware.responseTime)
 
 bot.start(startController)
 bot.command('new', newController)
