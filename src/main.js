@@ -12,6 +12,40 @@ import messagesController from './bot/controllers/messages/index.js'
 import hearsController from './bot/controllers/commands/hears.js'
 import action from './bot/controllers/commands/actions.js'
 
+import config from 'config'
+import middleware from './middleware/index.js'
+
+
+bot.use(async (ctx, next) => {
+  console.log(`\n\n${new Date().toISOString()} - new update from telegram`)
+  console.log(
+    "👩‍💻 USER:",
+    ctx.from?.username ?? ctx.from?.first_name ?? ctx.from?.id ?? "🤖"
+  )
+  console.log("====Update")
+   
+  if(config.get("NODE_ENV") === "development" && !ctx.update?.callback_query) {
+    if(config.get("ADMIN") !== ctx.message.from.id) {
+      console.log('🙅 not authorized user!')
+      console.log(
+        "🖋 Context: ", 
+        ctx.message
+      )
+      return
+    }
+  } 
+
+  try {
+    const botInfo = await bot.telegram.getMe();
+
+  } catch (error) {
+    
+  }
+
+  await next()
+})
+bot.use(middleware.responseTime)
+
 bot.start(startController)
 bot.command('new', newController)
 bot.command('mode', modeController)

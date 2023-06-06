@@ -12,4 +12,7 @@ build:
 	docker build -t yvpai_4 .
 
 run:
-	docker run --rm -dp 3000:3000 --name tg_bot yvpai_4
+	docker run -dp 3000:3000 --name tg_bot yvpai_4
+
+killNode:
+	kill -9 $$(pgrep node | tail -1)
