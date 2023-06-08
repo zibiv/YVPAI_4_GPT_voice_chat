@@ -15,6 +15,11 @@ import action from './bot/controllers/commands/actions.js'
 import config from 'config'
 import middleware from './middleware/index.js'
 
+const dailyLimits = {
+  BASIC: 1000,
+  PREMIUM: 50,
+  UNLIMITED: "UNLIMITED"
+}
 
 bot.use(async (ctx, next) => {
   console.log(`\n\n${new Date().toISOString()} - new update from telegram`)
@@ -59,8 +64,8 @@ bot.action('озвучить сообщение', action.messageToSpeech)
 
 bot.telegram.setMyCommands(commands)
 
-bot.on(message('voice'), messagesController.voice)
-bot.on(message('text'), messagesController.text)
+bot.on(message('voice'), (ctx, next) => middleware.dailyLimits(ctx, next, dailyLimits), messagesController.voice)
+bot.on(message('text'), (ctx, next) => middleware.dailyLimits(ctx, next, dailyLimits), messagesController.text)
 
 bot.launch()
 
