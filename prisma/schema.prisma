@@ -5,34 +5,32 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum SubscriptionType {
+  BASIC
+  PRO
+  UNLIM
+}
+
+enum ContextMessageRole {
+  user
+  assistant
+  system
+}
+
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
+model TelegramUser {
+  id       BigInt  @id
+  username String?
+  userId   String @unique
+  subscription  SubscriptionType @default(BASIC)
+  startFlag Boolean @default(false)
+  timeoutUntil DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
 }
 
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
-
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
-}
