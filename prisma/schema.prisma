@@ -7,8 +7,8 @@ generator client {
 
 enum SubscriptionType {
   BASIC
-  PRO
-  UNLIM
+  PREMIUM
+  UNLIMITED
 }
 
 enum ContextMessageRole {
@@ -24,13 +24,50 @@ datasource db {
 }
 
 model TelegramUser {
-  id       BigInt  @id
-  username String?
-  userId   String @unique
-  subscription  SubscriptionType @default(BASIC)
-  startFlag Boolean @default(false)
-  timeoutUntil DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                BigInt                    @id
+  username          String?
+  firstName         String                    @default("")
+  userId            String?
+  subscriptionType  SubscriptionType          @default(BASIC)
+  startFlag         Boolean                   @default(false)
+  timeoutUntil      DateTime?
+  createdChatId     BigInt?
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+
+  Messages          Message[]
+  ContextMessages   ContextMessage[]
+}
+
+model Message {
+  id                BigInt                    @id
+  fromUserId        BigInt
+  chatId            BigInt
+  text              String                    @db.Text
+  date              DateTime
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+
+  TelegramUser      TelegramUser              @relation(fields: [fromUserId], references: [id])
+  ContextMessages    ContextMessage[]
+
+  @@unique([chatId, id])
+  @@index([fromUserId])
+}
+
+model ContextMessage {
+  id                String                    @id @default(cuid())
+  order             Int                       @default(0)
+  contextId         String
+  role              ContextMessageRole
+  text              String?                   @db.Text
+  messageId         BigInt?
+  userId            BigInt?
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+
+  Messages          Message?                  @relation(fields: [messageId], references: [id])
+  TelegramUser      TelegramUser?             @relation(fields: [userId], references: [id])
+
 }
 
