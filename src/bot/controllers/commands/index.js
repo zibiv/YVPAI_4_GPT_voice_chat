@@ -1,5 +1,7 @@
 import { createNewContext } from '../../../../data/starterMessage.js'
+import { PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient()
 export const commands = [
   { command: 'start', description: 'запустить бота' },
   { command: 'new', description: 'очистить контекст беседы' },
@@ -21,6 +23,14 @@ export const startController = (ctx) => {
 
 export const newController = async (ctx) => {
   ctx.session = createNewContext()
+  //TODO создание контекста в БД
+
+  const context =  await prisma.context.create({
+    data:  {
+      chatId: ctx.message.chat.id,
+      creatorId: ctx.message.from.id
+    }
+  })
   await ctx.reply(
     'Начинаю новый диалог, жду вашего голосового сообщения или текста.'
   )
