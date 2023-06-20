@@ -1,6 +1,6 @@
 import { dailyLimits } from "../config/dailyLimits.js";
 
-export async function dailyLimitMiddleware(ctx, next) {
+export async function checkDailyLimit(ctx, next) {
   const { userFromDB } = ctx
   const {  userDailyMessageCount } = userFromDB
   console.log("daily middleware - user: ", userFromDB)
